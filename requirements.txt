@@ -1,6 +1,8 @@
+Unidecode==0.04.16
 gnureadline==6.3.3
 ipython==2.2.0
 lxml==3.3.5
+python-slugify==0.0.9
 requests==2.3.0
 scrapelib==0.10.0
 unicodecsv==0.9.4

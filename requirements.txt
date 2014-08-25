@@ -1,0 +1,7 @@
+gnureadline==6.3.3
+ipython==2.2.0
+lxml==3.3.5
+requests==2.3.0
+scrapelib==0.10.0
+unicodecsv==0.9.4
+wsgiref==0.1.2

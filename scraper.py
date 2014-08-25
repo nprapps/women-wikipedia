@@ -26,14 +26,17 @@ def write_corpus():
     for row in table.findall('tr'):
         write_row(row, writer)
 
+
 def write_row(row, writer):
     tds = row.findall('td')
     try:
         name_cell = tds[1]
         name = tds[1].text_content()
 
-        first_name = name.split(' ', 1)[0]
-        last_name = name.split(' ', 1)[1]
+        # split first name and last name. not worrying about middles
+        name_splits = name.split(' ')
+        first_name = name.split(' ')[0]
+        last_name = name.split(' ')[len(name_splits) - 1]
 
         # there are italics in this table we have to account for
         italics = name_cell.find('i')
@@ -43,7 +46,6 @@ def write_row(row, writer):
             anchor = name_cell.find('a')
 
         href = anchor.attrib['href']
-
         writer.writerow([first_name, last_name, urljoin(BASE_URL, href)])
 
     except:
@@ -77,6 +79,30 @@ def parse_wiki(row):
         f = codecs.open('text/%s.txt' % slug, 'w', encoding='utf-8')
         f.write(text)
         f.close()
+
+        grep_text('text/%s.txt' % slug, row)
+
+
+def grep_text(file, row):
+    with open(file, 'r') as f:
+        searchlines = f.readlines()
+
+    first_name_count = 0
+    last_name_count = 0
+
+    for line in searchlines:
+        if row['first_name'] in line:
+            first_name_count = first_name_count + 1
+
+        if row['last_name'] in line:
+            last_name_count = last_name_count + 1
+
+    ratio = (float(first_name_count) / last_name_count)
+
+    print row['first_name'], first_name_count
+    print row['last_name'], last_name_count
+    print 'ratio', ratio
+    print '\n'
 
 
 if __name__ == '__main__':
